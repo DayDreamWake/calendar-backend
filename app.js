@@ -30,38 +30,45 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Homepage get endpoint
 app.get("/", (request, response, next) => {
-  response.json({ message: "Hey! This is your Calendar!" });
+  response.json({ message: "Hey! This is your fucking Calendar!" });
   next();
 });
 
 // register endpoint
-app.post("/register", (req, res) => {
+app.post("/register", (request, response) => {
+  // hash the password
   bcrypt
-    .hash(req.body.password, 10)
+    .hash(request.body.password, 10)
     .then((hashedPassword) => {
+      // create a new user instance and collect the data
       const user = new User({
-        username: req.body.username,
+        userName: request.body.userName,
         password: hashedPassword,
       });
+
+      // save the new user
       user
         .save()
-        .then((result)=> {
-          res.status(201).send({
-            message:"User created successfully",
+        // return success if the new user is added to the database successfully
+        .then((result) => {
+          response.status(201).send({
+            message: "User Created Successfully",
             result,
           });
         })
-        .catch((error)=>{
-          res.status(500).send({
-            message:"Error creating user",
+        // catch error if the new user wasn't added successfully to the database
+        .catch((error) => {
+          response.status(500).send({
+            message: "Error creating user",
             error,
           });
         });
     })
-    .catch((error)=>{
-      res.status(500).send({
-        message: "Password failed hashing",
-        error,
+    // catch error if the password hash isn't successful
+    .catch((e) => {
+      response.status(500).send({
+        message: "Password was not hashed successfully",
+        e,
       });
     });
 });
@@ -69,7 +76,7 @@ app.post("/register", (req, res) => {
 // login endpoint
 app.post("/login", (req,res,next) => {
   // find a user with {req.body.username}
-  User.findOne({username: req.body.username})
+  User.findOne({userName: req.body.userName})
   // if found
   .then((user)=>{
     // compare passwords
