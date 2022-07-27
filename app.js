@@ -42,7 +42,7 @@ app.post("/register", (request, response) => {
     .then((hashedPassword) => {
       // create a new user instance and collect the data
       const user = new User({
-        userName: request.body.userName,
+        username: request.body.username,
         password: hashedPassword,
       });
 
@@ -76,7 +76,7 @@ app.post("/register", (request, response) => {
 // login endpoint
 app.post("/login", (req,res,next) => {
   // find a user with {req.body.username}
-  User.findOne({userName: req.body.userName})
+  User.findOne({username: req.body.username})
   // if found
   .then((user)=>{
     // compare passwords
