@@ -5,6 +5,9 @@ const bcrypt = require("bcrypt");
 // require database connection 
 const dbConnect = require("./db/dbConnect");
 const User = require("./db/userModel");
+const Event = require("./db/eventModel");
+const Course = require("./db/courseModel");
+const { default: mongoose } = require("mongoose");
 
 // execute database connection 
 dbConnect();
@@ -111,5 +114,94 @@ app.post("/login", (req,res,next) => {
     })
   });
 });
+
+// addEvent endpoint
+app.post("/add-event", (req, res)=>{
+  const event = new Event({
+    name: req.body.name,
+    date: req.body.date,
+    startTime:req.body.startTime,
+    endTime: req.body.endTime,
+    description: req.body.description,
+    creator: req.body.creator
+  });
+  event
+  .save()
+  .then((result)=>{
+    res.status(201).send({
+      message:"event created successfully",
+      result,
+    });
+  })
+  .catch((e)=>{
+    res.status(500).send({
+      message:"Error creating event",
+      e
+    });
+  })
+})
+
+// event endpoint
+app.get("/events", (req, res)=>{
+  Event.find({'creator':req.body._id})
+  .then((result)=>{
+    res.status(201).send({
+      message:"Events fetch successful",
+      result,
+    });
+  })
+  .catch((e)=>{
+    res.status(500).send({
+      message:"Error fetching events",
+      e
+    });
+  })
+})
+
+// add-course endpoint
+app.post("/add-course", (req, res)=>{
+  const course = new Course({
+    name: req.body.name,
+    daysInAWeek: req.body.daysInAWeek,
+    timeInAWeek: req.body.timeInAWeek,
+    startDate:req.body.startDate,
+    endDate: req.body.endDate,
+    creator: {type: mongoose.Schema.Types.ObjectId, ref:"Users", required: true}
+  });
+  course
+  .save()
+  .then((result)=>{
+    res.status(201).send({
+      message:"Course created successfully",
+      result,
+    });
+  })
+  .catch((e)=>{
+    res.status(500).send({
+      message:"Error creating course",
+      e
+    });
+  })
+})
+
+// event endpoint
+app.get("/courses", (req, res)=>{
+  Event.find({'creator':req.body._id})
+  .then((result)=>{
+    res.status(201).send({
+      message:"Courses fetch successful",
+      result,
+    });
+  })
+  .catch((e)=>{
+    res.status(500).send({
+      message:"Error fetching courses",
+      e
+    });
+  })
+})
+
+
+
 
 module.exports = app;

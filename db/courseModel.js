@@ -5,7 +5,7 @@ const CourseSchema = mongoose.Schema({
     timeInAWeek: [{type: Number, required: true}],
     startDate:{type: Date, required: true},
     endDate: {type: Date, required: true},
-    creator: {type: Schema.Types.ObjectId, ref:"Users", required: true}
+    creator: {type: mongoose.Schema.Types.ObjectId, ref:"Users", required: true}
 })
 
 module.exports = mongoose.model("Course", CourseSchema);
