@@ -166,7 +166,7 @@ app.post("/add-course", (req, res)=>{
     timeInAWeek: req.body.timeInAWeek,
     startDate:req.body.startDate,
     endDate: req.body.endDate,
-    creator: {type: mongoose.Schema.Types.ObjectId, ref:"Users", required: true}
+    creator: req.body.creator,
   });
   course
   .save()
@@ -186,7 +186,7 @@ app.post("/add-course", (req, res)=>{
 
 // event endpoint
 app.get("/courses", (req, res)=>{
-  Event.find({'creator':req.body._id})
+  Course.find({'creator':req.body._id})
   .then((result)=>{
     res.status(201).send({
       message:"Courses fetch successful",
