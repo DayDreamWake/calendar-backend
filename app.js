@@ -35,12 +35,12 @@ app.get("/", (request, response, next) => {
 });
 
 // register endpoint
-app.post("/register", (req, res, next) => {
+app.post("/register", (req, res) => {
   bcrypt
     .hash(req.body.password, 10)
     .then((hashedPassword) => {
       const user = new User({
-        userName: req.body.userName,
+        username: req.body.username,
         password: hashedPassword,
       });
       user
@@ -49,27 +49,27 @@ app.post("/register", (req, res, next) => {
           res.status(201).send({
             message:"User created successfully",
             result,
-          })
+          });
         })
         .catch((error)=>{
           res.status(500).send({
             message:"Error creating user",
-            Error,
-          })
-        })
+            error,
+          });
+        });
     })
     .catch((error)=>{
       res.status(500).send({
         message: "Password failed hashing",
         error,
-      })
-    })
-})
+      });
+    });
+});
 
 // login endpoint
 app.post("/login", (req,res,next) => {
-  // find a user with {req.body.userName}
-  User.findOne({userName: req.body.userName})
+  // find a user with {req.body.username}
+  User.findOne({username: req.body.username})
   // if found
   .then((user)=>{
     // compare passwords
