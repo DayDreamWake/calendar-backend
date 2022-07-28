@@ -136,6 +136,7 @@ exports.editEvent = function(req, res, next){
     .then(()=>{
         res.status(201).send({
             message: "update successful",
+            event,
         })
     })
     .catch((e)=>{
