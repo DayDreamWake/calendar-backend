@@ -39,7 +39,7 @@ app.get("/", (request, response, next) => {
 });
 
 // register endpoint
-app.post("/register", (request, response) => {
+app.post("/register", controller.register/* (request, response) => {
   // hash the password
   bcrypt
     .hash(request.body.password, 10)
@@ -75,7 +75,7 @@ app.post("/register", (request, response) => {
         e,
       });
     });
-});
+} */);
 
 // login endpoint
 app.post("/login", controller.login/* (req,res,next) => {
@@ -117,7 +117,7 @@ app.post("/login", controller.login/* (req,res,next) => {
 } */);
 
 // addEvent endpoint
-app.post("/add-event", (req, res)=>{
+app.post("/add-event", controller.addEvent/* (req, res)=>{
   const event = new Event({
     name: req.body.name,
     date: req.body.date,
@@ -140,7 +140,7 @@ app.post("/add-event", (req, res)=>{
       e
     });
   })
-})
+} */)
 
 // event endpoint
 app.get("/events", (req, res)=>{
