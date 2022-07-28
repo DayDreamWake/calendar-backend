@@ -7,10 +7,11 @@ const dbConnect = require("./db/dbConnect");
 const User = require("./db/userModel");
 const Event = require("./db/eventModel");
 const Course = require("./db/courseModel");
+const controller = require("./controller/controllers");
 const { default: mongoose } = require("mongoose");
 
 // execute database connection 
-dbConnect();
+//dbConnect();
 
 
 // Curb Cores Error by adding a header here
@@ -77,7 +78,7 @@ app.post("/register", (request, response) => {
 });
 
 // login endpoint
-app.post("/login", (req,res,next) => {
+app.post("/login", controller.login/* (req,res,next) => {
   // find a user with {req.body.username}
   User.findOne({username: req.body.username})
   // if found
@@ -113,7 +114,7 @@ app.post("/login", (req,res,next) => {
       error,
     })
   });
-});
+} */);
 
 // addEvent endpoint
 app.post("/add-event", (req, res)=>{
