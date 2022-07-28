@@ -39,108 +39,13 @@ app.get("/", (request, response, next) => {
 });
 
 // register endpoint
-app.post("/register", controller.register/* (request, response) => {
-  // hash the password
-  bcrypt
-    .hash(request.body.password, 10)
-    .then((hashedPassword) => {
-      // create a new user instance and collect the data
-      const user = new User({
-        username: request.body.username,
-        password: hashedPassword,
-      });
-
-      // save the new user
-      user
-        .save()
-        // return success if the new user is added to the database successfully
-        .then((result) => {
-          response.status(201).send({
-            message: "User Created Successfully",
-            result,
-          });
-        })
-        // catch error if the new user wasn't added successfully to the database
-        .catch((error) => {
-          response.status(500).send({
-            message: "Error creating user",
-            error,
-          });
-        });
-    })
-    // catch error if the password hash isn't successful
-    .catch((e) => {
-      response.status(500).send({
-        message: "Password was not hashed successfully",
-        e,
-      });
-    });
-} */);
+app.post("/register", controller.register);
 
 // login endpoint
-app.post("/login", controller.login/* (req,res,next) => {
-  // find a user with {req.body.username}
-  User.findOne({username: req.body.username})
-  // if found
-  .then((user)=>{
-    // compare passwords
-    bcrypt
-    .compare(req.body.password, user.password)
-    .then((check)=>{
-      // password does not match
-      if(!check){
-        return res.status(500).send({
-          message: "Password not match",
-          error,
-        })
-      }
-       // password matches
-      res.status(200).send({
-        message: "Login successful",
-        user: user,
-      })
-
-    })
-    .catch((error)=>{
-      res.status(500).send({
-        message: "Password check failed",
-        error
-      })
-    })
-  })
-  .catch((error)=>{
-    res.status(500).send({
-      message:"User not found",
-      error,
-    })
-  });
-} */);
+app.post("/login", controller.login);
 
 // addEvent endpoint
-app.post("/add-event", controller.addEvent/* (req, res)=>{
-  const event = new Event({
-    name: req.body.name,
-    date: req.body.date,
-    startTime:req.body.startTime,
-    endTime: req.body.endTime,
-    description: req.body.description,
-    creator: req.body.creator
-  });
-  event
-  .save()
-  .then((result)=>{
-    res.status(201).send({
-      message:"event created successfully",
-      result,
-    });
-  })
-  .catch((e)=>{
-    res.status(500).send({
-      message:"Error creating event",
-      e
-    });
-  })
-} */)
+app.post("/add-event", controller.addEvent);
 
 // event endpoint
 app.get("/events", (req, res)=>{
@@ -158,6 +63,12 @@ app.get("/events", (req, res)=>{
     });
   })
 })
+
+// delete-event endpoint
+app.post("/delete-event", controller.deleteEvent);
+
+// edit-event endpoint
+app.post("/edit-event", controller.editEvent);
 
 // add-course endpoint
 app.post("/add-course", (req, res)=>{

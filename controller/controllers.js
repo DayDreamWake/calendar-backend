@@ -106,3 +106,42 @@ exports.addEvent = function(req, res, next) {
         });
       })
 }
+
+exports.deleteEvent = function(req, res, next){
+    Event.findByIdAndRemove(req.body.id)
+    .then(()=>{
+        res.status(201).send({
+            message:"delete successful"
+        })
+    })
+    .catch((e)=>{
+        res.status(500).send({
+            message:"Error deleting event",
+            e,
+        })
+    })
+}
+
+exports.editEvent = function(req, res, next){
+    const event = new Event({
+        name: req.body.name,
+        date: req.body.date,
+        startTime:req.body.startTime,
+        endTime: req.body.endTime,
+        description: req.body.description,
+        creator: req.body.creator,
+        _id: req.body.id,
+      });
+    Event.findByIdAndUpdate(req.body.id, event)
+    .then(()=>{
+        res.status(201).send({
+            message: "update successful",
+        })
+    })
+    .catch((e)=>{
+        res.status(500).send({
+            message: "Error editing event",
+            e,
+        })
+    })
+}
